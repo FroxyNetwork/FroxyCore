@@ -29,6 +29,11 @@
 	<!-- Configuration of repositories -->
 	<repositories>
 		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+
+		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
@@ -69,6 +74,14 @@
 			<groupId>com.github.froxynetwork</groupId>
 			<artifactId>froxygame</artifactId>
 			<version>0.0.1</version>
+		</dependency>
+
+		<!--Spigot API -->
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.12.2-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
