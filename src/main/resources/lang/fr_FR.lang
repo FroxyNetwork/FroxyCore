@@ -1,0 +1,3 @@
+test.test : french
+test.test2 : frenchy
+test.test4 : Test {}, Salut {}
