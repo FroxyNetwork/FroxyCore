@@ -75,6 +75,13 @@
 			<artifactId>froxygame</artifactId>
 			<version>0.0.1</version>
 		</dependency>
+    
+		<!-- API -->
+		<dependency>
+			<groupId>com.github.froxynetwork</groupId>
+			<artifactId>froxyapi</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 
 		<!--Spigot API -->
 		<dependency>
