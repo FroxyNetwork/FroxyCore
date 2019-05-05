@@ -1,3 +1,2 @@
-test.test : english
-test.test3 : englishy
-test.test4 : Test {}, Hi {}
+command.nopermission : §cYou don't have permission to execute this command
+command.syntaxerror : §cSyntax: {}

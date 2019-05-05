@@ -2,11 +2,15 @@ package com.froxynetwork.froxycore;
 
 import java.io.File;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.froxynetwork.froxyapi.Froxy;
+import com.froxynetwork.froxyapi.language.LanguageManager;
 import com.froxynetwork.froxycore.api.APIImpl;
+import com.froxynetwork.froxycore.api.command.CommandManagerImpl;
 import com.froxynetwork.froxycore.api.language.LanguageManagerImpl;
 
 /**
@@ -34,30 +38,25 @@ import com.froxynetwork.froxycore.api.language.LanguageManagerImpl;
  * 
  * @author 0ddlyoko
  */
-public class FroxyCore {
+public class FroxyCore extends JavaPlugin {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	/**
-	 * TEST
-	 */
-	public FroxyCore() {
-//		String clientId = "WEBSOCKET_045cfff18fe0ab8393178e7b7826f227";
-//		String clientSecret = "SECRET_ecfdc21a8d5022e2db64b1315b087aaf";
-//		NetworkManager nm = new NetworkManager("http://localhost/", clientId, clientSecret);
+	@Override
+	public void onEnable() {
+		log.info("Starting FroxyCore, please wait");
+		// String clientId = "WEBSOCKET_045cfff18fe0ab8393178e7b7826f227";
+		// String clientSecret = "SECRET_ecfdc21a8d5022e2db64b1315b087aaf";
+		// NetworkManager nm = new NetworkManager("http://localhost/", clientId,
+		// clientSecret);
 
-		APIImpl impl = new APIImpl(null, null, "0.0.3", log, new LanguageManagerImpl());
+		LanguageManager languageManager = new LanguageManagerImpl();
+		CommandManagerImpl commandManager = new CommandManagerImpl();
+		Bukkit.getPluginManager().registerEvents(commandManager, this);
+		APIImpl impl = new APIImpl(null, null, Constants.VERSION, log, languageManager, commandManager);
 		Froxy.setAPI(impl);
 		File lang = new File(getClass().getClassLoader().getResource("lang").getFile());
 		Froxy.register(lang);
-		// Show "0.0.3"
-		System.out.println(Froxy.getVersion());
-		// Show "english"
-		System.out.println(Froxy.$("test.test"));
-		// TODO
-	}
-
-	public static void main(String[] args) {
-		new FroxyCore();
+		log.info("FroxyCore started !");
 	}
 }
