@@ -1,0 +1,11 @@
+name: FroxyNetwork
+main: com.froxynetwork.froxycore.FroxyCore
+version: 0.0.3
+author: oddlyoko
+commands:
+  box:
+    description: help box
+permissions:
+  box.give:
+    default: op
+    description: Ajouter des clés à des joueurs

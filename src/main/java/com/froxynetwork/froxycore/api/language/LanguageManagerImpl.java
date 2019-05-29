@@ -46,12 +46,12 @@ public class LanguageManagerImpl implements LanguageManager {
 
 	@Override
 	public String $(String id, Languages lang, String... params) {
-		return com.froxynetwork.froxygame.languages.LanguageManager.$(id, langApiToGame(lang), params);
+		return com.froxynetwork.froxygame.languages.LanguageManager.$(id, langApiToGame(lang), params).replace("$", "§");
 	}
 
 	@Override
 	public String $_(String id, Languages lang, String... params) {
-		return com.froxynetwork.froxygame.languages.LanguageManager.$_(id, langApiToGame(lang), params);
+		return com.froxynetwork.froxygame.languages.LanguageManager.$_(id, langApiToGame(lang), params).replace("$", "§");
 	}
 
 	private com.froxynetwork.froxygame.languages.Languages langApiToGame(Languages lang) {

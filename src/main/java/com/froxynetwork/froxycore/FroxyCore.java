@@ -55,7 +55,8 @@ public class FroxyCore extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(commandManager, this);
 		APIImpl impl = new APIImpl(null, null, Constants.VERSION, log, languageManager, commandManager);
 		Froxy.setAPI(impl);
-		File lang = new File(getClass().getClassLoader().getResource("lang").getFile());
+		// TODO EDIT HERE
+		File lang = new File("plugins" + File.separator + getDescription().getName() + File.separator + "lang");
 		Froxy.register(lang);
 		log.info("FroxyCore started !");
 	}
