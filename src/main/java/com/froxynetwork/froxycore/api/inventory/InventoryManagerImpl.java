@@ -46,12 +46,28 @@ public class InventoryManagerImpl implements InventoryManager, Listener {
 
 	public InventoryManagerImpl() {
 		this.inventories = new HashMap<>();
+	}
+
+	public void init() {
 		Bukkit.getPluginManager().registerEvents(this, Froxy.getCorePlugin());
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(Froxy.getCorePlugin(), () -> {
+			if (inventories.size() == 0)
+				return;
+			for (Inventory inv : inventories.values()) {
+				int tick = 0;
+				Object currentTick = inv.get(Inventory.TICK);
+				if (currentTick != null && currentTick instanceof Integer)
+					tick = Integer.parseInt(currentTick.toString());
+				inv.save(Inventory.TICK, tick + 1);
+				inv.getInventoryProvider().update(inv);
+			}
+		}, 1, 1);
 	}
 
 	@Override
 	public Inventory openInventory(InventoryProvider provider, Player p) {
 		InventoryImpl inv = new InventoryImpl(p, provider);
+		inv.getInventoryProvider().init(inv);
 		inventories.put(p.getUniqueId(), inv);
 		inv.open();
 		return inv;

@@ -51,6 +51,7 @@ public class InventoryImpl implements Inventory {
 		this.size = inventoryProvider.rows(this);
 		this.items = new ClickableItem[9 * size];
 		this.bukkitInventory = Bukkit.createInventory(player, size, inventoryProvider.title(this));
+		save(TICK, 0);
 	}
 
 	@Override

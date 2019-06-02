@@ -57,6 +57,7 @@ public class FroxyCore extends JavaPlugin {
 		APIImpl impl = new APIImpl(this, null, Constants.VERSION, log, languageManager, commandManager,
 				inventoryManager);
 		Froxy.setAPI(impl);
+		inventoryManager.init();
 		// TODO EDIT HERE
 		File lang = new File("plugins" + File.separator + getDescription().getName() + File.separator + "lang");
 		Froxy.register(lang);
