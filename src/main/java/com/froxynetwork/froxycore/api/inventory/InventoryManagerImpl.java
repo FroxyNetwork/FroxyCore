@@ -96,9 +96,9 @@ public class InventoryManagerImpl implements InventoryManager, Listener {
 		org.bukkit.inventory.Inventory clickedInventory = e.getClickedInventory();
 		if (clickedInventory == null)
 			return;
-		if (inv.getBukkitInventory() != clickedInventory) {
+		e.setCancelled(true);
+		if (!inv.getBukkitInventory().equals(clickedInventory)) {
 			// The player doesn't click on the correct inventory
-			e.setCancelled(true);
 			return;
 		}
 		inv.handler(e);
