@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.froxynetwork.froxyapi.Froxy;
-import com.froxynetwork.froxyapi.language.LanguageManager;
 import com.froxynetwork.froxycore.api.APIImpl;
 import com.froxynetwork.froxycore.api.command.CommandManagerImpl;
+import com.froxynetwork.froxycore.api.inventory.InventoryManagerImpl;
 import com.froxynetwork.froxycore.api.language.LanguageManagerImpl;
 
 /**
@@ -50,11 +50,14 @@ public class FroxyCore extends JavaPlugin {
 		// NetworkManager nm = new NetworkManager("http://localhost/", clientId,
 		// clientSecret);
 
-		LanguageManager languageManager = new LanguageManagerImpl();
+		LanguageManagerImpl languageManager = new LanguageManagerImpl();
 		CommandManagerImpl commandManager = new CommandManagerImpl();
+		InventoryManagerImpl inventoryManager = new InventoryManagerImpl();
 		Bukkit.getPluginManager().registerEvents(commandManager, this);
-		APIImpl impl = new APIImpl(null, null, Constants.VERSION, log, languageManager, commandManager);
+		APIImpl impl = new APIImpl(this, null, Constants.VERSION, log, languageManager, commandManager,
+				inventoryManager);
 		Froxy.setAPI(impl);
+		inventoryManager.init();
 		// TODO EDIT HERE
 		File lang = new File("plugins" + File.separator + getDescription().getName() + File.separator + "lang");
 		Froxy.register(lang);

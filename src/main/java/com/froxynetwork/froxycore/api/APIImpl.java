@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 
 import com.froxynetwork.froxyapi.API;
 import com.froxynetwork.froxyapi.command.CommandManager;
+import com.froxynetwork.froxyapi.inventory.InventoryManager;
 import com.froxynetwork.froxyapi.language.LanguageManager;
 
 /**
@@ -47,14 +48,17 @@ public class APIImpl implements API {
 
 	private CommandManager commandManager;
 
+	private InventoryManager inventoryManager;
+
 	public APIImpl(JavaPlugin corePlugin, JavaPlugin gamePlugin, String version, Logger logger,
-			LanguageManager languageManager, CommandManager commandManager) {
+			LanguageManager languageManager, CommandManager commandManager, InventoryManager inventoryManager) {
 		this.corePlugin = corePlugin;
 		this.gamePlugin = gamePlugin;
 		this.version = version;
 		this.logger = logger;
 		this.languageManager = languageManager;
 		this.commandManager = commandManager;
+		this.inventoryManager = inventoryManager;
 	}
 
 	@Override
@@ -85,5 +89,10 @@ public class APIImpl implements API {
 	@Override
 	public CommandManager getCommandManager() {
 		return commandManager;
+	}
+
+	@Override
+	public InventoryManager getInventoryManager() {
+		return inventoryManager;
 	}
 }
