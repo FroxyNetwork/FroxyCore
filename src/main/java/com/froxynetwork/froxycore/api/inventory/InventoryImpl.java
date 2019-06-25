@@ -69,6 +69,11 @@ public class InventoryImpl implements Inventory {
 	}
 
 	@Override
+	public int getRows() {
+		return size;
+	}
+
+	@Override
 	public void set(int pos, ClickableItem item) {
 		if (pos < 0 || pos > size * 9)
 			throw new IllegalArgumentException("pos must be between 0 and " + (size * 9));
@@ -97,13 +102,13 @@ public class InventoryImpl implements Inventory {
 		// 10 - col because width starts with 1 and not 0
 		if (width < 1 || width > 10 - col)
 			throw new IllegalArgumentException("The width must be between 1 and " + (10 - col));
-		if (height < 1 || height > row + 1 - col)
-			throw new IllegalArgumentException("The height must be between 1 and " + (row + 1 - col));
+		if (height < 1 || height > size + 1 - row)
+			throw new IllegalArgumentException("The height must be between 1 and " + (size + 1 - row));
 		for (int i = col; i < col + width; i++) {
 			for (int j = row; j < row + height; j++) {
 				// Around
-				if (i == col || i == col + width || j == row || j == row + height)
-					set(j, j, item);
+				if (i == col || i == col + width - 1 || j == row || j == row + height - 1)
+					set(i, j, item);
 			}
 		}
 	}
