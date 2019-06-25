@@ -98,7 +98,7 @@ public class InventoryImpl implements Inventory {
 		if (width < 1 || width > 10 - col)
 			throw new IllegalArgumentException("The width must be between 1 and " + (10 - col));
 		if (height < 1 || height > row + 1 - col)
-			throw new IllegalArgumentException("The height must be between 1 and " + (7 - col));
+			throw new IllegalArgumentException("The height must be between 1 and " + (row + 1 - col));
 		for (int i = col; i < col + width; i++) {
 			for (int j = row; j < row + height; j++) {
 				// Around
