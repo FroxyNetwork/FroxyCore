@@ -85,7 +85,27 @@ public class InventoryImpl implements Inventory {
 
 	@Override
 	public void rectangle(int pos, int width, int height, ClickableItem item) {
-		// TODO
+		if (pos < 0 || pos > size * 9)
+			throw new IllegalArgumentException("pos must be between 0 and " + (size * 9));
+		int[] colRow = posToLoc(pos);
+		int col = colRow[0];
+		int row = colRow[1];
+		if (col < 1 || col > 9)
+			throw new IllegalArgumentException("col must be between 1 and 9");
+		if (row < 1 || row > 6)
+			throw new IllegalArgumentException("row must be between 1 and the maximum number of rows");
+		// 10 - col because width starts with 1 and not 0
+		if (width < 1 || width > 10 - col)
+			throw new IllegalArgumentException("The width must be between 1 and " + (10 - col));
+		if (height < 1 || height > 7 - col)
+			throw new IllegalArgumentException("The height must be between 1 and " + (7 - col));
+		for (int i = col; i < col + width; i++) {
+			for (int j = row; j < row + height; j++) {
+				// Around
+				if (i == col || i == col + width || j == row || j == row + height)
+					set(j, j, item);
+			}
+		}
 	}
 
 	public void open() {
