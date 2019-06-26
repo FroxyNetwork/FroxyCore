@@ -107,7 +107,7 @@
 		<dependency>
 			<groupId>com.github.froxynetwork</groupId>
 			<artifactId>froxyapi</artifactId>
-			<version>feature~inventory-3bc9dcd7b3-1</version>
+			<version>feature~inventory-57fb27e7a5-1</version>
 		</dependency>
 
 		<!--Spigot API -->
