@@ -5,7 +5,7 @@
 
 	<groupId>com.froxynetwork</groupId>
 	<artifactId>FroxyCore</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.5</version>
 	<packaging>jar</packaging>
 
 	<name>FroxyCore</name>
@@ -107,7 +107,7 @@
 		<dependency>
 			<groupId>com.github.froxynetwork</groupId>
 			<artifactId>froxyapi</artifactId>
-			<version>0.0.4</version>
+			<version>0.0.5</version>
 		</dependency>
 
 		<!--Spigot API -->

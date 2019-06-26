@@ -85,6 +85,9 @@ public class InventoryManagerImpl implements InventoryManager, Listener {
 
 	@EventHandler
 	public void onPlayerInventoryClick(InventoryClickEvent e) {
+		org.bukkit.inventory.Inventory clickedInventory = e.getClickedInventory();
+		if (clickedInventory == null)
+			return;
 		if (!inventories.containsKey(e.getWhoClicked().getUniqueId()))
 			return;
 		Player p = (Player) e.getWhoClicked();
@@ -93,9 +96,6 @@ public class InventoryManagerImpl implements InventoryManager, Listener {
 			// Impossible
 			return;
 		}
-		org.bukkit.inventory.Inventory clickedInventory = e.getClickedInventory();
-		if (clickedInventory == null)
-			return;
 		e.setCancelled(true);
 		if (!inv.getBukkitInventory().equals(clickedInventory)) {
 			// The player doesn't click on the correct inventory
