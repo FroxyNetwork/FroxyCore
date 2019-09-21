@@ -1,7 +1,6 @@
 package com.froxynetwork.froxycore.api;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
 
 import com.froxynetwork.froxyapi.API;
 import com.froxynetwork.froxyapi.command.CommandManager;
@@ -42,20 +41,17 @@ public class APIImpl implements API {
 
 	private String version;
 
-	private Logger logger;
-
 	private LanguageManager languageManager;
 
 	private CommandManager commandManager;
 
 	private InventoryManager inventoryManager;
 
-	public APIImpl(JavaPlugin corePlugin, JavaPlugin gamePlugin, String version, Logger logger,
-			LanguageManager languageManager, CommandManager commandManager, InventoryManager inventoryManager) {
+	public APIImpl(JavaPlugin corePlugin, JavaPlugin gamePlugin, String version, LanguageManager languageManager,
+			CommandManager commandManager, InventoryManager inventoryManager) {
 		this.corePlugin = corePlugin;
 		this.gamePlugin = gamePlugin;
 		this.version = version;
-		this.logger = logger;
 		this.languageManager = languageManager;
 		this.commandManager = commandManager;
 		this.inventoryManager = inventoryManager;
@@ -74,11 +70,6 @@ public class APIImpl implements API {
 	@Override
 	public String getVersion() {
 		return version;
-	}
-
-	@Override
-	public Logger getLogger() {
-		return logger;
 	}
 
 	@Override
