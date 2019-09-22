@@ -87,7 +87,7 @@ public class Froxy {
 	 *            API instance
 	 */
 	public static void setAPI(API api) {
-		Froxy.setAPI(api);
+		com.froxynetwork.froxyapi.Froxy.setAPI(api);
 	}
 
 	/**
