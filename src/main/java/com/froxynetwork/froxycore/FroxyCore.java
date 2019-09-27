@@ -65,6 +65,7 @@ public class FroxyCore extends JavaPlugin {
 				return;
 			}
 			LOG.info("Done");
+
 			LOG.info("Contacting REST ...");
 			// Contacting rest
 			NetworkManager networkManager = new NetworkManager(config.getString("url"), auth[1], auth[2]);
@@ -82,21 +83,24 @@ public class FroxyCore extends JavaPlugin {
 				return;
 			}
 			LOG.info("Done");
+
 			LOG.info("Contacting WebSocket server");
 			WebSocketManager webSocketManager;
 			try {
 				webSocketManager = new WebSocketManager(config.getString("websocket"), auth[0], auth[1]);
 			} catch (URISyntaxException ex) {
-				LOG.error("Invalid url while contacting WebSocket: ", ex);
+				LOG.error("Invalid url while initializing WebSocket: ", ex);
 				Bukkit.shutdown();
 				return;
 			}
 			LOG.info("Done");
+
 			LOG.info("Loading Managers ...");
 			LanguageManagerImpl languageManager = new LanguageManagerImpl();
 			CommandManagerImpl commandManager = new CommandManagerImpl();
 			InventoryManagerImpl inventoryManager = new InventoryManagerImpl();
 			LOG.info("Done");
+
 			LOG.info("Doing some stuff ...");
 			// Register events
 			Bukkit.getPluginManager().registerEvents(commandManager, this);
@@ -105,13 +109,17 @@ public class FroxyCore extends JavaPlugin {
 					inventoryManager);
 			Froxy.setAPI(impl);
 			Froxy.init(webSocketManager, networkManager);
-			// Connect to the WebSocket
-			webSocketManager.connect();
 			LOG.info("Done");
+
 			LOG.info("Initializing InventoryManager ...");
 			// Initialize InventoryManager
 			inventoryManager.init();
 			LOG.info("Done");
+
+			LOG.info("Starting Thread for WebSocket checker ...");
+			webSocketManager.startThread();
+			LOG.info("Done");
+
 			// TODO EDIT HERE
 			// Register lang directory
 			File lang = new File("plugins" + File.separator + getDescription().getName() + File.separator + "lang");
@@ -121,6 +129,13 @@ public class FroxyCore extends JavaPlugin {
 			LOG.error("An error has occured while loading the core: ", ex);
 			Bukkit.shutdown();
 		}
+	}
+
+	@Override
+	public void onDisable() {
+		LOG.info("Stopping FroxyCore, please wait");
+		Froxy.getWebSocketManager().stop();
+		LOG.info("FroxyCore stopped !");
 	}
 
 	/**
