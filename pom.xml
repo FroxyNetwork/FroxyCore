@@ -95,6 +95,13 @@
 			<artifactId>froxynetwork</artifactId>
 			<version>feature~websocket-29406e4211-1</version>
 		</dependency>
+		
+		<!-- Network -->
+		<dependency>
+			<groupId>com.github.froxynetwork</groupId>
+			<artifactId>froxynetwork</artifactId>
+			<version>feature~websocket-503ea369cb-1</version>
+		</dependency>
 
 		<!-- Game -->
 		<dependency>

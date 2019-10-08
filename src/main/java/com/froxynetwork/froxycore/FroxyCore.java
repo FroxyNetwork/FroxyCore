@@ -16,6 +16,7 @@ import com.froxynetwork.froxycore.api.APIImpl;
 import com.froxynetwork.froxycore.api.command.CommandManagerImpl;
 import com.froxynetwork.froxycore.api.inventory.InventoryManagerImpl;
 import com.froxynetwork.froxycore.api.language.LanguageManagerImpl;
+import com.froxynetwork.froxycore.websocket.CustomInteractionImpl;
 import com.froxynetwork.froxycore.websocket.WebSocketManager;
 import com.froxynetwork.froxynetwork.network.NetworkManager;
 import com.froxynetwork.froxynetwork.network.output.RestException;
@@ -87,7 +88,8 @@ public class FroxyCore extends JavaPlugin {
 			LOG.info("Contacting WebSocket server");
 			WebSocketManager webSocketManager;
 			try {
-				webSocketManager = new WebSocketManager(config.getString("websocket"), auth[0], auth[1]);
+				webSocketManager = new WebSocketManager(config.getString("websocket"), auth[0], auth[1],
+						new CustomInteractionImpl());
 			} catch (URISyntaxException ex) {
 				LOG.error("Invalid url while initializing WebSocket: ", ex);
 				Bukkit.shutdown();

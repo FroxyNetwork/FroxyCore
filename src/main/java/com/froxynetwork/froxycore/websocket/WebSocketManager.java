@@ -53,8 +53,10 @@ public class WebSocketManager {
 	private Thread connectThread;
 	private Thread thread;
 
-	public WebSocketManager(String url, String id, String clientId) throws URISyntaxException {
-		this.webSocketManager = new com.froxynetwork.froxynetwork.network.websocket.WebSocketManager(url);
+	public WebSocketManager(String url, String id, String clientId, CustomInteractionImpl customInteractionImpl)
+			throws URISyntaxException {
+		this.webSocketManager = new com.froxynetwork.froxynetwork.network.websocket.WebSocketManager(url,
+				customInteractionImpl);
 		this.id = id;
 		this.clientId = clientId;
 
