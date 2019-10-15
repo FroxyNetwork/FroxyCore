@@ -2,6 +2,7 @@ package com.froxynetwork.froxycore.api.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -70,6 +71,8 @@ public class CommandManagerImpl implements CommandManager, Listener {
 		return null;
 	}
 
+	private Pattern pattern = Pattern.compile(" ");
+
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
@@ -77,7 +80,7 @@ public class CommandManagerImpl implements CommandManager, Listener {
 		if (p == null || msg == null)
 			return;
 		if (msg.startsWith("/")) {
-			String[] split = msg.split(" ");
+			String[] split = pattern.split(msg);
 			String label = split[0].substring(1);
 			String[] args = new String[split.length - 1];
 			if (split.length >= 2)

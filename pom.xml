@@ -93,21 +93,14 @@
 		<dependency>
 			<groupId>com.github.froxynetwork</groupId>
 			<artifactId>froxynetwork</artifactId>
-			<version>feature~websocket-29406e4211-1</version>
-		</dependency>
-		
-		<!-- Network -->
-		<dependency>
-			<groupId>com.github.froxynetwork</groupId>
-			<artifactId>froxynetwork</artifactId>
-			<version>feature~websocket-503ea369cb-1</version>
+			<version>feature~websocket-3492474dd2-1</version>
 		</dependency>
 
 		<!-- Game -->
 		<dependency>
 			<groupId>com.github.froxynetwork</groupId>
 			<artifactId>froxygame</artifactId>
-			<version>0.0.3</version>
+			<version>develop-d01c839f40-1</version>
 		</dependency>
 
 		<!-- API -->
