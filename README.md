@@ -13,4 +13,4 @@ Ce dépôt contient les sources et la documentation pour la partie FroxyCore.
 ## License
 This software is available under the following licenses:
 
-  * MIT
+  * GNU General Public License
