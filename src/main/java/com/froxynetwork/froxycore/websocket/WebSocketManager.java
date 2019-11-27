@@ -78,8 +78,7 @@ public class WebSocketManager {
 							// Still not connected
 							LOG.error("Still not connected, disconnecting ...");
 							// We interrupt the Thread
-							if (connectThread != null && connectThread.isAlive())
-								connectThread.interrupt();
+							webSocketManager.stopThread();
 							// Disconnecting ...
 							webSocketManager.disconnect();
 							connectThread = null;
@@ -162,7 +161,7 @@ public class WebSocketManager {
 	}
 
 	public void stop() {
-		disconnect();
 		runThread = false;
+		disconnect();
 	}
 }
