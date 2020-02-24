@@ -87,8 +87,8 @@ public class InventoryImpl implements Inventory {
 		if (pos < 0 || pos > size * 9)
 			throw new IllegalArgumentException("pos must be between 0 and " + (size * 9) + ", but is " + pos);
 		int[] colRow = posToLoc(pos);
-		int col = colRow[0];
-		int row = colRow[1];
+		int row = colRow[0];
+		int col = colRow[1];
 		if (col < 1 || col > 9)
 			throw new IllegalArgumentException("col must be between 1 and 9, but is " + col);
 		if (row < 1 || row > 6)
@@ -96,9 +96,9 @@ public class InventoryImpl implements Inventory {
 		// 10 - col because width starts with 1 and not 0
 		if (width < 1 || width > 10 - col)
 			throw new IllegalArgumentException("The width must be between 1 and " + (10 - col) + ", but is " + width);
-		if (height < 1 || height > size + 1 - row)
+		if (height < 1 || height > getRows() + 1 - row)
 			throw new IllegalArgumentException(
-					"The height must be between 1 and " + (size + 1 - row) + ", but is " + height);
+					"The height must be between 1 and " + (getRows() + 1 - row) + ", but is " + height);
 		for (int i = col; i < col + width; i++)
 			for (int j = row; j < row + height; j++)
 				// Around
@@ -120,9 +120,9 @@ public class InventoryImpl implements Inventory {
 		// 10 - col because width starts with 1 and not 0
 		if (width < 1 || width > 10 - col)
 			throw new IllegalArgumentException("The width must be between 1 and " + (10 - col) + ", but is " + width);
-		if (height < 1 || height > size + 1 - row)
+		if (height < 1 || height > getRows() + 1 - row)
 			throw new IllegalArgumentException(
-					"The height must be between 1 and " + (size + 1 - row) + ", but is " + height);
+					"The height must be between 1 and " + (getRows() + 1 - row) + ", but is " + height);
 		for (int i = col; i < col + width; i++)
 			for (int j = row; j < row + height; j++)
 				set(i, j, item);
@@ -137,9 +137,10 @@ public class InventoryImpl implements Inventory {
 		if (pos < 0 || pos > items.length)
 			return;
 		ClickableItem item = items[pos];
-		// Nothing to do
-		if (item == null)
+		if (item == null) {
+			// Nothing to do
 			return;
+		}
 		item.run(e);
 	}
 

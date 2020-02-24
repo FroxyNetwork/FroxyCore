@@ -5,7 +5,7 @@
 
 	<groupId>com.froxynetwork</groupId>
 	<artifactId>FroxyCore</artifactId>
-	<version>0.0.5</version>
+	<version>0.1.4</version>
 	<packaging>jar</packaging>
 
 	<name>FroxyCore</name>
@@ -91,23 +91,23 @@
 
 		<!-- Network -->
 		<dependency>
-			<groupId>com.github.froxynetwork</groupId>
+			<groupId>com.froxynetwork</groupId>
 			<artifactId>froxynetwork</artifactId>
-			<version>feature~websocket-3492474dd2-1</version>
+			<version>0.1.4</version>
 		</dependency>
 
 		<!-- Game -->
 		<dependency>
-			<groupId>com.github.froxynetwork</groupId>
+			<groupId>com.froxynetwork</groupId>
 			<artifactId>froxygame</artifactId>
-			<version>develop-d01c839f40-1</version>
+			<version>0.1.4</version>
 		</dependency>
 
 		<!-- API -->
 		<dependency>
-			<groupId>com.github.froxynetwork</groupId>
+			<groupId>com.froxynetwork</groupId>
 			<artifactId>froxyapi</artifactId>
-			<version>feature~core-411fe40c0a-1</version>
+			<version>0.1.4</version>
 		</dependency>
 
 		<!--Spigot API -->
