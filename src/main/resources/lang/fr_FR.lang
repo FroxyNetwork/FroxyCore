@@ -1,2 +1,2 @@
-command.nopermission : §cVous n'avez pas la permission d'executer cette commande
-command.syntaxerror : §cSyntaxe: {}
+command.nopermission : &cVous n'avez pas la permission d'executer cette commande
+command.syntaxerror : &cSyntaxe: {}
