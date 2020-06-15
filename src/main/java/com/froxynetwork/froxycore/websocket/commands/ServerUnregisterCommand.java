@@ -1,6 +1,7 @@
 package com.froxynetwork.froxycore.websocket.commands;
 
-import org.bukkit.Bukkit;
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,23 +27,31 @@ import com.froxynetwork.froxynetwork.network.websocket.IWebSocketCommander;
  *
  * @author 0ddlyoko
  */
-public class ServerStopCommand implements IWebSocketCommander {
+public class ServerUnregisterCommand implements IWebSocketCommander {
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
+	private Pattern spacePattern = Pattern.compile(" ");
 
 	@Override
 	public String name() {
-		return "stop";
+		return "unregister";
 	}
 
 	@Override
 	public String description() {
-		return "Stop this server";
+		return "On server close";
 	}
 
 	@Override
 	public void onReceive(String message) {
-		LOG.info("Got stop command, stopping ...");
-		// TODO Find a better way to shutdown this server
-		Bukkit.shutdown();
+		// unregister <id> <type>
+		String[] split = spacePattern.split(message);
+		if (split.length < 2) {
+			// Error
+			LOG.error("Invalid message: {}", message);
+			return;
+		}
+		String id = split[0];
+		String type = split[1];
+		// TODO
 	}
 }

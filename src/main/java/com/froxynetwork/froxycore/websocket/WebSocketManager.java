@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.froxynetwork.froxycore.Froxy;
+import com.froxynetwork.froxycore.websocket.commands.ServerRegisterCommand;
 import com.froxynetwork.froxycore.websocket.commands.ServerStopCommand;
 import com.froxynetwork.froxynetwork.network.websocket.WebSocketClientImpl;
 import com.froxynetwork.froxynetwork.network.websocket.WebSocketFactory;
@@ -39,6 +40,8 @@ import lombok.Getter;
 public class WebSocketManager {
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
+	private boolean loaded = false;
+
 	private URI websocketURI;
 	@Getter
 	private WebSocketClientImpl client;
@@ -60,7 +63,8 @@ public class WebSocketManager {
 		});
 
 		// Commands
-		client.registerCommand(new ServerStopCommand(client));
+		client.registerCommand(new ServerRegisterCommand());
+		client.registerCommand(new ServerStopCommand());
 
 		WebSocketAutoReconnectModule wsarm = new WebSocketAutoReconnectModule(5000);
 		client.registerWebSocketDisconnection(remote -> {
@@ -74,8 +78,6 @@ public class WebSocketManager {
 
 		LOG.debug("login() ok");
 	}
-
-	private boolean loaded = false;
 
 	public void load() throws URISyntaxException {
 		if (loaded)
