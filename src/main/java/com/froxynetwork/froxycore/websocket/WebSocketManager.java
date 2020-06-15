@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.froxynetwork.froxycore.Froxy;
 import com.froxynetwork.froxycore.websocket.commands.ServerRegisterCommand;
 import com.froxynetwork.froxycore.websocket.commands.ServerStopCommand;
+import com.froxynetwork.froxycore.websocket.commands.ServerUnregisterCommand;
 import com.froxynetwork.froxynetwork.network.websocket.WebSocketClientImpl;
 import com.froxynetwork.froxynetwork.network.websocket.WebSocketFactory;
 import com.froxynetwork.froxynetwork.network.websocket.auth.WebSocketTokenAuthentication;
@@ -65,6 +66,7 @@ public class WebSocketManager {
 		// Commands
 		client.registerCommand(new ServerRegisterCommand());
 		client.registerCommand(new ServerStopCommand());
+		client.registerCommand(new ServerUnregisterCommand());
 
 		WebSocketAutoReconnectModule wsarm = new WebSocketAutoReconnectModule(5000);
 		client.registerWebSocketDisconnection(remote -> {
