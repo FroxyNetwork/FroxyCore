@@ -1,4 +1,10 @@
-package com.froxynetwork.froxycore;
+package com.froxynetwork.froxycore.websocket.commands;
+
+import org.bukkit.Bukkit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.froxynetwork.froxynetwork.network.websocket.IWebSocketCommander;
 
 /**
  * FroxyCore
@@ -20,9 +26,23 @@ package com.froxynetwork.froxycore;
  *
  * @author 0ddlyoko
  */
-public final class Constants {
-	public static final String VERSION = "0.1.4";
+public class ServerStopCommand implements IWebSocketCommander {
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
-	private Constants() {
+	@Override
+	public String name() {
+		return "stop";
+	}
+
+	@Override
+	public String description() {
+		return "Stop this server";
+	}
+
+	@Override
+	public void onReceive(String message) {
+		LOG.info("Got stop command, stopping ...");
+		// TODO Find a better way to shutdown this server
+		Bukkit.shutdown();
 	}
 }

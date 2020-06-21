@@ -1,7 +1,7 @@
-name: FroxyNetwork
+name: FroxyCore
 main: com.froxynetwork.froxycore.FroxyCore
-version: 0.0.3
-author: oddlyoko
+version: 0.1.4
+author: 0ddlyoko
 commands:
   box:
     description: help box
