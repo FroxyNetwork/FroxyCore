@@ -1,48 +1,54 @@
 package com.froxynetwork.froxycore.api;
 
+import java.util.Date;
+
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
 
 import com.froxynetwork.froxyapi.API;
 import com.froxynetwork.froxyapi.command.CommandManager;
 import com.froxynetwork.froxyapi.inventory.InventoryManager;
 import com.froxynetwork.froxyapi.language.LanguageManager;
+import com.froxynetwork.froxyapi.player.PlayerManager;
+import com.froxynetwork.froxycore.FroxyCore;
+import com.froxynetwork.froxynetwork.network.output.data.server.ServerDataOutput.Server;
 
 /**
- * MIT License
- *
- * Copyright (c) 2019 FroxyNetwork
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * FroxyCore
  * 
+ * Copyright (C) 2019 FroxyNetwork
+ * 
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author 0ddlyoko
  */
-
+/**
+ * Implementation of the {@link API} interface
+ */
 public class APIImpl implements API {
 
-	private JavaPlugin corePlugin;
+	private FroxyCore corePlugin;
 
 	private JavaPlugin gamePlugin;
 
-	private String version;
+	private String id;
+	private String name;
+	private String type;
+	private String vps;
+	private int port;
+	private Date creationTime;
 
-	private Logger logger;
+	private String version;
 
 	private LanguageManager languageManager;
 
@@ -50,19 +56,34 @@ public class APIImpl implements API {
 
 	private InventoryManager inventoryManager;
 
-	public APIImpl(JavaPlugin corePlugin, JavaPlugin gamePlugin, String version, Logger logger,
-			LanguageManager languageManager, CommandManager commandManager, InventoryManager inventoryManager) {
+	private PlayerManager playerManager;
+
+	public APIImpl(FroxyCore corePlugin, Server srv, String version, LanguageManager languageManager,
+			CommandManager commandManager, InventoryManager inventoryManager, PlayerManager playerManager) {
 		this.corePlugin = corePlugin;
-		this.gamePlugin = gamePlugin;
+		this.id = srv.getId();
+		this.name = srv.getName();
+		this.type = srv.getType();
+		this.vps = srv.getVps();
+		this.port = srv.getPort();
+		this.creationTime = srv.getCreationTime();
 		this.version = version;
-		this.logger = logger;
 		this.languageManager = languageManager;
 		this.commandManager = commandManager;
 		this.inventoryManager = inventoryManager;
+		this.playerManager = playerManager;
 	}
 
 	@Override
-	public JavaPlugin getCorePlugin() {
+	public void register(JavaPlugin plugin) {
+		if (this.gamePlugin != null)
+			return;
+		this.gamePlugin = plugin;
+		corePlugin.register();
+	}
+
+	@Override
+	public FroxyCore getCorePlugin() {
 		return corePlugin;
 	}
 
@@ -72,13 +93,36 @@ public class APIImpl implements API {
 	}
 
 	@Override
-	public String getVersion() {
-		return version;
+	public String getId() {
+		return id;
 	}
 
 	@Override
-	public Logger getLogger() {
-		return logger;
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getType() {
+		return type;
+	}
+
+	public String getVps() {
+		return vps;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	@Override
+	public Date getCreationTime() {
+		return creationTime;
+	}
+
+	@Override
+	public String getVersion() {
+		return version;
 	}
 
 	@Override
@@ -94,5 +138,10 @@ public class APIImpl implements API {
 	@Override
 	public InventoryManager getInventoryManager() {
 		return inventoryManager;
+	}
+
+	@Override
+	public PlayerManager getPlayerManager() {
+		return playerManager;
 	}
 }

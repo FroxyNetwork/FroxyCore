@@ -11,28 +11,23 @@ import com.froxynetwork.froxyapi.inventory.Inventory;
 import com.froxynetwork.froxyapi.inventory.InventoryProvider;
 
 /**
- * MIT License
- *
- * Copyright (c) 2019 FroxyNetwork
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * FroxyCore
  * 
+ * Copyright (C) 2019 FroxyNetwork
+ * 
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author 0ddlyoko
  */
 public class InventoryImpl implements Inventory {
@@ -93,8 +88,8 @@ public class InventoryImpl implements Inventory {
 		if (pos < 0 || pos > size * 9)
 			throw new IllegalArgumentException("pos must be between 0 and " + (size * 9) + ", but is " + pos);
 		int[] colRow = posToLoc(pos);
-		int col = colRow[0];
-		int row = colRow[1];
+		int row = colRow[0];
+		int col = colRow[1];
 		if (col < 1 || col > 9)
 			throw new IllegalArgumentException("col must be between 1 and 9, but is " + col);
 		if (row < 1 || row > 6)
@@ -102,9 +97,9 @@ public class InventoryImpl implements Inventory {
 		// 10 - col because width starts with 1 and not 0
 		if (width < 1 || width > 10 - col)
 			throw new IllegalArgumentException("The width must be between 1 and " + (10 - col) + ", but is " + width);
-		if (height < 1 || height > size + 1 - row)
+		if (height < 1 || height > getRows() + 1 - row)
 			throw new IllegalArgumentException(
-					"The height must be between 1 and " + (size + 1 - row) + ", but is " + height);
+					"The height must be between 1 and " + (getRows() + 1 - row) + ", but is " + height);
 		for (int i = col; i < col + width; i++)
 			for (int j = row; j < row + height; j++)
 				// Around
@@ -126,9 +121,9 @@ public class InventoryImpl implements Inventory {
 		// 10 - col because width starts with 1 and not 0
 		if (width < 1 || width > 10 - col)
 			throw new IllegalArgumentException("The width must be between 1 and " + (10 - col) + ", but is " + width);
-		if (height < 1 || height > size + 1 - row)
+		if (height < 1 || height > getRows() + 1 - row)
 			throw new IllegalArgumentException(
-					"The height must be between 1 and " + (size + 1 - row) + ", but is " + height);
+					"The height must be between 1 and " + (getRows() + 1 - row) + ", but is " + height);
 		for (int i = col; i < col + width; i++)
 			for (int j = row; j < row + height; j++)
 				set(i, j, item);
@@ -143,9 +138,10 @@ public class InventoryImpl implements Inventory {
 		if (pos < 0 || pos > items.length)
 			return;
 		ClickableItem item = items[pos];
-		// Nothing to do
-		if (item == null)
+		if (item == null) {
+			// Nothing to do
 			return;
+		}
 		item.run(e);
 	}
 

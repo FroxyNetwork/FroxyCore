@@ -1,66 +1,169 @@
 package com.froxynetwork.froxycore;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.froxynetwork.froxyapi.Froxy;
 import com.froxynetwork.froxycore.api.APIImpl;
 import com.froxynetwork.froxycore.api.command.CommandManagerImpl;
 import com.froxynetwork.froxycore.api.inventory.InventoryManagerImpl;
 import com.froxynetwork.froxycore.api.language.LanguageManagerImpl;
+import com.froxynetwork.froxycore.api.player.PlayerManagerImpl;
+import com.froxynetwork.froxycore.event.PlayerEvent;
+import com.froxynetwork.froxycore.websocket.WebSocketManager;
+import com.froxynetwork.froxynetwork.network.NetworkManager;
+import com.froxynetwork.froxynetwork.network.output.data.server.ServerDataOutput.Server;
 
 /**
- * MIT License
- *
- * Copyright (c) 2019 FroxyNetwork
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * FroxyCore
  * 
+ * Copyright (C) 2019 FroxyNetwork
+ * 
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author 0ddlyoko
  */
 public class FroxyCore extends JavaPlugin {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
+	private Config config;
 
 	@Override
 	public void onEnable() {
-		log.info("Starting FroxyCore, please wait");
-		// String clientId = "WEBSOCKET_045cfff18fe0ab8393178e7b7826f227";
-		// String clientSecret = "SECRET_ecfdc21a8d5022e2db64b1315b087aaf";
-		// NetworkManager nm = new NetworkManager("http://localhost/", clientId,
-		// clientSecret);
+		try {
+			LOG.info("Starting FroxyCore, please wait");
+			saveDefaultConfig();
+			// Config
+			config = new Config(new File("plugins" + File.separator + "FroxyCore" + File.separator + "config.yml"));
+			LOG.info("Reading auth file ...");
+			// Auth file
+			String[] auth = readAuthFile();
+			if (auth == null || auth.length != 2 || !checkNotNullOrEmpty(auth)) {
+				LOG.error("Auth file is null or there is missing lines ! Stopping ...");
+				Bukkit.shutdown();
+				return;
+			}
+			LOG.info("Done");
 
-		LanguageManagerImpl languageManager = new LanguageManagerImpl();
-		CommandManagerImpl commandManager = new CommandManagerImpl();
-		InventoryManagerImpl inventoryManager = new InventoryManagerImpl();
-		Bukkit.getPluginManager().registerEvents(commandManager, this);
-		APIImpl impl = new APIImpl(this, null, Constants.VERSION, log, languageManager, commandManager,
-				inventoryManager);
-		Froxy.setAPI(impl);
-		inventoryManager.init();
-		// TODO EDIT HERE
-		File lang = new File("plugins" + File.separator + getDescription().getName() + File.separator + "lang");
-		Froxy.register(lang);
-		log.info("FroxyCore started !");
+			LOG.info("Contacting REST ...");
+			NetworkManager networkManager = new NetworkManager(config.getString("url"), auth[0], auth[1]);
+			Server srv = networkManager.getNetwork().getServerService().syncGetServer(auth[0]);
+			LOG.info("Done");
+
+			LOG.info("Loading Managers ...");
+			LOG.info("WebSocketManager ...");
+			WebSocketManager webSocketManager = new WebSocketManager(new URI(config.getString("websocket")));
+			LOG.info("LanguageManager ...");
+			LanguageManagerImpl languageManager = new LanguageManagerImpl();
+			LOG.info("CommandManager ...");
+			CommandManagerImpl commandManager = new CommandManagerImpl();
+			LOG.info("InventoryManager ...");
+			InventoryManagerImpl inventoryManager = new InventoryManagerImpl();
+			LOG.info("PlayerManager ...");
+			PlayerManagerImpl playerManager = new PlayerManagerImpl();
+			LOG.info("Done");
+
+			LOG.info("Doing some stuff ...");
+			// Initializing api
+			APIImpl impl = new APIImpl(this, srv, Constants.VERSION, languageManager, commandManager, inventoryManager,
+					playerManager);
+			Froxy.setAPI(impl);
+			Froxy.init(webSocketManager, networkManager);
+			LOG.info("Done");
+
+			LOG.info("Initializing InventoryManager ...");
+			// Initialize InventoryManager
+			inventoryManager.init();
+			LOG.info("Done");
+
+			LOG.info("Registering events ...");
+			Bukkit.getPluginManager().registerEvents(commandManager, this);
+			Bukkit.getPluginManager().registerEvents(playerManager, this);
+			Bukkit.getPluginManager().registerEvents(new PlayerEvent(), this);
+			LOG.info("Done");
+
+			// TODO EDIT HERE
+			// Register lang directory
+			File lang = new File("plugins" + File.separator + getDescription().getName() + File.separator + "lang");
+			Froxy.register(lang);
+			LOG.info("FroxyCore started !");
+
+			// Simulate register
+			Froxy.register(this);
+		} catch (Exception ex) {
+			LOG.error("An error has occured while loading the core: ", ex);
+			Bukkit.shutdown();
+		}
+	}
+
+	@Override
+	public void onDisable() {
+		LOG.info("Stopping FroxyCore, please wait");
+		if (Froxy.getWebSocketManager() != null)
+			Froxy.getWebSocketManager().stop();
+		LOG.info("FroxyCore stopped !");
+	}
+
+	/**
+	 * @return [id, client_secret]
+	 */
+	private String[] readAuthFile() {
+		// The file name
+		String fileName = "plugins" + File.separator + "FroxyCore" + File.separator + "auth";
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+			String[] result = new String[] { reader.readLine(), reader.readLine() };
+			return result;
+		} catch (FileNotFoundException ex) {
+			LOG.error("auth file not found");
+			return new String[] {};
+		} catch (IOException ex) {
+			LOG.error("Exception while reading auth file:", ex);
+			return new String[] {};
+		}
+	}
+
+	private boolean checkNotNullOrEmpty(String[] arr) {
+		if (arr == null)
+			return false;
+		for (String str : arr)
+			if (str == null || "".equalsIgnoreCase(str.trim()))
+				return false;
+		return true;
+	}
+
+	/**
+	 * Called when the game is registered
+	 */
+	public void register() {
+		// Contact WebSocket
+		LOG.info("Contacting WebSocket ...");
+		try {
+			Froxy.getWebSocketManager().load();
+		} catch (URISyntaxException ex) {
+			LOG.error("Invalid url while initializing WebSocket: ", ex);
+			Bukkit.shutdown();
+			return;
+		}
+		LOG.info("Done");
 	}
 }
