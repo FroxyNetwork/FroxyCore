@@ -106,21 +106,21 @@
 		<dependency>
 			<groupId>com.froxynetwork</groupId>
 			<artifactId>FroxyGame</artifactId>
-			<version>0.1.4</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<!-- Network -->
 		<dependency>
 			<groupId>com.froxynetwork</groupId>
 			<artifactId>FroxyNetwork</artifactId>
-			<version>0.1.4</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<!-- API -->
 		<dependency>
 			<groupId>com.froxynetwork</groupId>
 			<artifactId>FroxyApi</artifactId>
-			<version>0.1.4</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<!--Spigot API -->
