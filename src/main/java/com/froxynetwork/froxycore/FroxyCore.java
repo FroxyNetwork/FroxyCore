@@ -45,7 +45,7 @@ import com.froxynetwork.froxynetwork.network.output.data.server.ServerDataOutput
  */
 public class FroxyCore extends JavaPlugin {
 
-	private final Logger LOG = LoggerFactory.getLogger(getClass());
+	private static final Logger LOG = LoggerFactory.getLogger(FroxyCore.class);
 	private Config config;
 
 	@Override
@@ -128,7 +128,7 @@ public class FroxyCore extends JavaPlugin {
 	/**
 	 * @return [id, client_secret]
 	 */
-	public String[] readAuthFile(File file) {
+	public static String[] readAuthFile(File file) {
 		if (file == null || !file.exists())
 			return new String[] {};
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -143,7 +143,7 @@ public class FroxyCore extends JavaPlugin {
 		}
 	}
 
-	public boolean isNotNullOrEmpty(String[] arr) {
+	public static boolean isNotNullOrEmpty(String[] arr) {
 		if (arr == null)
 			return false;
 		for (String str : arr)

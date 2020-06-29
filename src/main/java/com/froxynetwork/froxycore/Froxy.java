@@ -10,13 +10,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.froxynetwork.froxyapi.API;
 import com.froxynetwork.froxyapi.command.Command;
-import com.froxynetwork.froxyapi.inventory.Inventory;
 import com.froxynetwork.froxyapi.inventory.InventoryProvider;
 import com.froxynetwork.froxyapi.language.Languages;
-import com.froxynetwork.froxyapi.player.PlayerManager;
 import com.froxynetwork.froxycore.api.command.CommandManagerImpl;
+import com.froxynetwork.froxycore.api.inventory.InventoryImpl;
 import com.froxynetwork.froxycore.api.inventory.InventoryManagerImpl;
 import com.froxynetwork.froxycore.api.language.LanguageManagerImpl;
+import com.froxynetwork.froxycore.api.player.PlayerImpl;
+import com.froxynetwork.froxycore.api.player.PlayerManagerImpl;
 import com.froxynetwork.froxycore.websocket.WebSocketManager;
 import com.froxynetwork.froxynetwork.network.NetworkManager;
 
@@ -41,9 +42,8 @@ import com.froxynetwork.froxynetwork.network.NetworkManager;
  * @author 0ddlyoko
  */
 /**
- * This class is the same as
- * {@link com.froxynetwork.froxyapi.Froxy this class} but has
- * more methods
+ * This class is the same as {@link com.froxynetwork.froxyapi.Froxy this class}
+ * but has more methods
  */
 public class Froxy {
 	private static WebSocketManager webSocketManager;
@@ -108,21 +108,21 @@ public class Froxy {
 	public static JavaPlugin getGamePlugin() {
 		return com.froxynetwork.froxyapi.Froxy.getGamePlugin();
 	}
-	
+
 	/**
 	 * @return The id of this server
 	 */
 	public static String getId() {
 		return com.froxynetwork.froxyapi.Froxy.getId();
 	}
-	
+
 	/**
 	 * @return The name of this server
 	 */
 	public static String getName() {
 		return com.froxynetwork.froxyapi.Froxy.getName();
 	}
-	
+
 	/**
 	 * @return The type of this server
 	 */
@@ -146,7 +146,7 @@ public class Froxy {
 
 	// -----------------------------------------
 	// |
-	// | 			Language Manager
+	// | Language Manager
 	// |
 	// -----------------------------------------
 
@@ -218,7 +218,7 @@ public class Froxy {
 
 	// -----------------------------------------
 	// |
-	// | 			Command Manager
+	// | Command Manager
 	// |
 	// -----------------------------------------
 
@@ -256,7 +256,7 @@ public class Froxy {
 
 	// -----------------------------------------
 	// |
-	// | 			Inventory Manager
+	// | Inventory Manager
 	// |
 	// -----------------------------------------
 
@@ -274,8 +274,8 @@ public class Froxy {
 	 * @param player   The player
 	 * @return An inventory
 	 */
-	public static Inventory openInventory(InventoryProvider provider, Player player) {
-		return com.froxynetwork.froxyapi.Froxy.openInventory(provider, player);
+	public static InventoryImpl openInventory(InventoryProvider provider, Player player) {
+		return (InventoryImpl) com.froxynetwork.froxyapi.Froxy.openInventory(provider, player);
 	}
 
 	/**
@@ -291,8 +291,8 @@ public class Froxy {
 	 * @param p Specific player
 	 * @return The inventory of specific Player. Null if not opened
 	 */
-	public static Inventory getInventory(Player p) {
-		return com.froxynetwork.froxyapi.Froxy.getInventory(p);
+	public static InventoryImpl getInventory(Player p) {
+		return (InventoryImpl) com.froxynetwork.froxyapi.Froxy.getInventory(p);
 	}
 
 	/**
@@ -307,38 +307,39 @@ public class Froxy {
 
 	// -----------------------------------------
 	// |
-	// | 			Player Manager
+	// | Player Manager
 	// |
 	// -----------------------------------------
 
 	/**
 	 * @return The PlayerManager
 	 */
-	public static PlayerManager getPlayerManager() {
-		return com.froxynetwork.froxyapi.Froxy.getPlayerManager();
+	public static PlayerManagerImpl getPlayerManager() {
+		return (PlayerManagerImpl) com.froxynetwork.froxyapi.Froxy.getPlayerManager();
 	}
 
 	/**
 	 * @param name The name of the player
 	 * @return The player or null if not found
 	 */
-	public static com.froxynetwork.froxyapi.player.Player getPlayer(String name) {
-		return com.froxynetwork.froxyapi.Froxy.getPlayer(name);
+	public static PlayerImpl getPlayer(String name) {
+		return (PlayerImpl) com.froxynetwork.froxyapi.Froxy.getPlayer(name);
 	}
 
 	/**
 	 * @param uuid The uuid of the player
 	 * @return The player or null if not found
 	 */
-	public static com.froxynetwork.froxyapi.player.Player getPlayer(UUID uuid) {
-		return com.froxynetwork.froxyapi.Froxy.getPlayer(uuid);
+	public static PlayerImpl getPlayer(UUID uuid) {
+		return (PlayerImpl) com.froxynetwork.froxyapi.Froxy.getPlayer(uuid);
 	}
 
 	/**
 	 * @return An immutable list containing all players
 	 */
-	public static List<? extends com.froxynetwork.froxyapi.player.Player> getPlayers() {
-		return com.froxynetwork.froxyapi.Froxy.getPlayers();
+	@SuppressWarnings("unchecked")
+	public static List<? extends PlayerImpl> getPlayers() {
+		return (List<PlayerImpl>) com.froxynetwork.froxyapi.Froxy.getPlayers();
 	}
 
 	/**
