@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -107,6 +108,7 @@ public class FroxyCore extends JavaPlugin {
 			Froxy.register(lang);
 			LOG.info("FroxyCore started !");
 
+			// TODO Remove this line in the futur
 			// Simulate register
 			Froxy.register(this);
 		} catch (Exception ex) {
@@ -154,5 +156,15 @@ public class FroxyCore extends JavaPlugin {
 	 * Called when the game is registered
 	 */
 	public void register() {
+		// Contact WebSocket
+		LOG.info("Contacting WebSocket ...");
+		try {
+			Froxy.getWebSocketManager().load();
+		} catch (URISyntaxException ex) {
+			LOG.error("Invalid url while initializing WebSocket: ", ex);
+			Bukkit.shutdown();
+			return;
+		}
+		LOG.info("Done");
 	}
 }
