@@ -54,7 +54,7 @@ public class CommandManagerImpl implements CommandManager, Listener {
 		return commands;
 	}
 
-	private Command getCommand(String label) {
+	public Command getCommand(String label) {
 		for (Command cmd : commands) {
 			if (label.equalsIgnoreCase(cmd.getCommand()))
 				return cmd;

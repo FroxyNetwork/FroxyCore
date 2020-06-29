@@ -62,6 +62,7 @@ public class InventoryManagerImpl implements InventoryManager, Listener {
 	@Override
 	public Inventory openInventory(InventoryProvider provider, Player p) {
 		InventoryImpl inv = new InventoryImpl(p, provider);
+		inv.initBukkitInventory();
 		inv.getInventoryProvider().init(inv);
 		inventories.put(p.getUniqueId(), inv);
 		inv.open();

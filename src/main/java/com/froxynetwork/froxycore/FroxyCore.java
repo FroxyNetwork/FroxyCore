@@ -45,7 +45,7 @@ import com.froxynetwork.froxynetwork.network.output.data.server.ServerDataOutput
  */
 public class FroxyCore extends JavaPlugin {
 
-	private final Logger LOG = LoggerFactory.getLogger(getClass());
+	private static final Logger LOG = LoggerFactory.getLogger(FroxyCore.class);
 	private Config config;
 
 	@Override
@@ -57,8 +57,8 @@ public class FroxyCore extends JavaPlugin {
 			config = new Config(new File("plugins" + File.separator + "FroxyCore" + File.separator + "config.yml"));
 			LOG.info("Reading auth file ...");
 			// Auth file
-			String[] auth = readAuthFile();
-			if (auth == null || auth.length != 2 || !checkNotNullOrEmpty(auth)) {
+			String[] auth = readAuthFile(new File("plugins" + File.separator + "FroxyCore" + File.separator + "auth"));
+			if (auth == null || auth.length != 2 || !isNotNullOrEmpty(auth)) {
 				LOG.error("Auth file is null or there is missing lines ! Stopping ...");
 				Bukkit.shutdown();
 				return;
@@ -108,6 +108,7 @@ public class FroxyCore extends JavaPlugin {
 			Froxy.register(lang);
 			LOG.info("FroxyCore started !");
 
+			// TODO Remove this line in the futur
 			// Simulate register
 			Froxy.register(this);
 		} catch (Exception ex) {
@@ -127,10 +128,10 @@ public class FroxyCore extends JavaPlugin {
 	/**
 	 * @return [id, client_secret]
 	 */
-	private String[] readAuthFile() {
-		// The file name
-		String fileName = "plugins" + File.separator + "FroxyCore" + File.separator + "auth";
-		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+	public static String[] readAuthFile(File file) {
+		if (file == null || !file.exists())
+			return new String[] {};
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			String[] result = new String[] { reader.readLine(), reader.readLine() };
 			return result;
 		} catch (FileNotFoundException ex) {
@@ -142,7 +143,7 @@ public class FroxyCore extends JavaPlugin {
 		}
 	}
 
-	private boolean checkNotNullOrEmpty(String[] arr) {
+	public static boolean isNotNullOrEmpty(String[] arr) {
 		if (arr == null)
 			return false;
 		for (String str : arr)
