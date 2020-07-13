@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.froxynetwork.froxyapi.util.Config;
 import com.froxynetwork.froxycore.api.APIImpl;
 import com.froxynetwork.froxycore.api.command.CommandManagerImpl;
 import com.froxynetwork.froxycore.api.inventory.InventoryManagerImpl;
@@ -26,7 +27,7 @@ import com.froxynetwork.froxynetwork.network.output.data.server.ServerDataOutput
 /**
  * FroxyCore
  * 
- * Copyright (C) 2019 FroxyNetwork
+ * Copyright (C) 2020 FroxyNetwork
  * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
